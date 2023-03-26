@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Upload an Image of Yourself to Stylize!</title>
+</head>
+<body>
+	<h1>Upload an Image of Yourself to Stylize!</h1>
+	<form action="/upload" method="POST" enctype="multipart/form-data">
+		<input type="file" name="image" accept="image/*">
+		<button type="submit">Upload</button>
+	</form>
+</body>
+</html>
+
+<script type="text/javascript">
+
+    const form = document.querySelector('form');
+    const input = document.querySelector('input[type="file"]');
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const file = input.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+        
+        fetch('/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            // Handle response data here
+        })
+        .catch(error => {
+            console.error(error);
+            // Handle error here
+        });
+    });
+
+</script>
