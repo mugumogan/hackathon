@@ -20,7 +20,6 @@
 
 <script type="text/javascript">
     const apiKey = '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';
-    const prompt = 'change clothes color to red';
 
     const form = document.querySelector('form');
     const input = document.querySelector('input[type="file"]');
@@ -29,9 +28,19 @@
         event.preventDefault();
         const imagefile = input.files[0];
 
+        var promptText = document.getElementById("stylePrompt").value;
+
+        var previewImg = document.getElementById("preview");
+
+        // Create object URL from file
+        var objectUrl = URL.createObjectURL(file);
+
+        // Set image source to object URL
+        previewImg.src = objectUrl;
+
         const formData = new FormData();
         formData.append('image', imagefile);
-        formData.append('prompt', 'an image of a cat');
+        formData.append('prompt', promptText);
         formData.append('model', 'image-alpha-001');
         
         fetch('https://api.openai.com/v1/images/variations', {
