@@ -13,18 +13,27 @@
 </html>
 
 <script type="text/javascript">
+    const apiKey = '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';
+    const prompt = 'change clothes color to red';
 
     const form = document.querySelector('form');
     const input = document.querySelector('input[type="file"]');
 
     form.addEventListener('submit', (event) => {
         event.preventDefault();
-        const file = input.files[0];
+        const imagefile = input.files[0];
+
         const formData = new FormData();
-        formData.append('image', file);
+        formData.append('image', imagefile);
+        formData.append('prompt', 'an image of a cat');
+        formData.append('model', 'image-alpha-001');
         
-        fetch('/upload', {
+        fetch('https://api.openai.com/v1/images/generations', {
             method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+            },
             body: formData
         })
         .then(response => response.json())
