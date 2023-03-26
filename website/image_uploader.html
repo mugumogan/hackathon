@@ -6,9 +6,15 @@
 <body>
 	<h1>Upload an Image of Yourself to Stylize!</h1>
 	<form action="/upload" method="POST" enctype="multipart/form-data">
-		<input type="file" name="image" accept="image/*">
+		<input type="file" id="image-file" name="image-file" accept="image/png">
 		<button type="submit">Upload</button>
 	</form>
+    <br>
+
+    <label for="stylePrompt">Enter Style Description:<br></label>
+    <textarea id="stylePrompt" name="stylePrompt" rows="4" cols="50" placeholder="change clothes color to red"></textarea>
+
+    <img id="preview" src="#" alt="Preview">
 </body>
 </html>
 
