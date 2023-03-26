@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Get Image Filepath</title>
+</head>
+<body>
+	<label for="file">Select an Image:</label>
+	<input type="file" id="file" accept="image/*">
+	<p id="filepath"></p>
+	<script>
+		// Get file input element
+		var fileInput = document.getElementById("file");
+		
+		// When file is selected, get its filepath
+		fileInput.addEventListener("change", function(event) {
+			var filepath = event.target.value;
+			document.getElementById("filepath").textContent = filepath;
+		});
+	</script>
+</body>
+</html>

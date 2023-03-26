@@ -6,45 +6,70 @@
 <body>
 	<h1>Upload an Image of Yourself to Stylize!</h1>
 	<form action="/upload" method="POST" enctype="multipart/form-data">
-		<input type="file" name="image" accept="image/*">
+		<input type="file" id="image-file" name="image-file" accept="image/png">
 		<button type="submit">Upload</button>
 	</form>
+    <br>
+
+    <label for="stylePrompt">Enter Style Description:<br></label>
+    <textarea id="stylePrompt" name="stylePrompt" rows="4" cols="50" placeholder="change clothes color to red"></textarea>
+
+    <img id="preview" src="#" alt="Preview">
 </body>
 </html>
 
 <script type="text/javascript">
-    const apiKey = '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';
-    const prompt = 'change clothes color to red';
+    const apiKey = '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';
 
     const form = document.querySelector('form');
-    const input = document.querySelector('input[type="file"]');
+    var previewImg = document.getElementById("preview");
 
     form.addEventListener('submit', (event) => {
         event.preventDefault();
-        const imagefile = input.files[0];
-
-        const formData = new FormData();
-        formData.append('image', imagefile);
-        formData.append('prompt', 'an image of a cat');
-        formData.append('model', 'image-alpha-001');
-        
-        fetch('https://api.openai.com/v1/images/variations', {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
-            },
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            // Handle response data here
-        })
-        .catch(error => {
-            console.error(error);
-            // Handle error here
-        });
+        sendRequest()
     });
+
+    function sendRequest(apiKeyValue) {
+            // Get the image file
+            var file = document.getElementById("image-file").files[0];
+            
+            // Get the prompt text
+            var promptText = document.getElementById("stylePrompt").value;
+
+            var previewImg = document.getElementById("preview");
+
+
+            // Create object URL from file
+            var objectUrl = URL.createObjectURL(file);
+            
+            // Set image source to object URL
+            previewImg.src = objectUrl;
+            
+            // Create a FormData object to send the file and prompt to the API
+            var formData = new FormData();
+            formData.append("image", file);
+            formData.append("prompt", promptText);
+            
+            // Use the OpenAI API client and model keys to authenticate the API request
+            const api = new OpenAI({
+                apiKey: apiKeyValue,
+            });
+            const imageModel = api.imageModels.get("YOUR_MODEL_KEY_HERE");
+            
+            // Call the generate method to generate variations of the image with the given prompt
+            imageModel.generate(formData, {
+                model: "image-alpha-001",
+                responseFormat: "url",
+                prompt: promptText,
+            })
+            .then(function(response) {
+                // Handle the API response
+                console.log(response);
+            })
+            .catch(function(error) {
+                // Handle any errors
+                console.log(error);
+            });
+        }
 
 </script>

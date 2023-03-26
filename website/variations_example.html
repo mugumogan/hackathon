@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Send Image to OpenAI Image Variations API</title>
+</head>
+<body>
+	<label for="file">Select an Image:</label>
+	<input type="file" id="file" accept="image/*">
+	<button id="send-button">Send to API</button>
+	<script>
+		// Get file input and send button elements
+		var fileInput = document.getElementById("file");
+		var sendButton = document.getElementById("send-button");
+		
+		// Add event listener to send button
+		sendButton.addEventListener("click", function() {
+			// Get selected file
+			var file = fileInput.files[0];
+			
+			// Create form data object to send file to API
+			var formData = new FormData();
+			formData.append("image", file);
+			
+			// Send file to API using fetch
+			fetch("https://api.openai.com/v1/images/generations", {
+				method: "POST",
+				headers: {
+                    'Content-Type': 'multipart/form-data',
+					"Authorization": "Bearer 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"
+				},
+				body: formData
+			})
+			.then(response => response.json())
+			.then(data => {
+				// Handle API response data
+				console.log("API Response:", data);
+			})
+			.catch(error => {
+				// Handle API request error
+				console.error("API Error:", error);
+			});
+		});
+
+        function sendRequest() {
+            // Get the image file
+            var file = document.getElementById("image-file").files[0];
+            
+            // Get the prompt text
+            var promptText = document.getElementById("prompt").value;
+            
+            // Create a FormData object to send the file and prompt to the API
+            var formData = new FormData();
+            formData.append("image", file);
+            formData.append("prompt", promptText);
+            
+            // Use the OpenAI API client and model keys to authenticate the API request
+            const api = new OpenAI({
+                apiKey: "YOUR_API_KEY_HERE",
+            });
+            const imageModel = api.imageModels.get("YOUR_MODEL_KEY_HERE");
+            
+            // Call the generate method to generate variations of the image with the given prompt
+            imageModel.generate(formData, {
+                model: "image-alpha-001",
+                responseFormat: "url",
+                prompt: promptText,
+            })
+            .then(function(response) {
+                // Handle the API response
+                console.log(response);
+            })
+            .catch(function(error) {
+                // Handle any errors
+                console.log(error);
+            });
+        }
+	</script>
+</body>
+</html>
