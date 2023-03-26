@@ -28,7 +28,7 @@
         formData.append('prompt', 'an image of a cat');
         formData.append('model', 'image-alpha-001');
         
-        fetch('https://api.openai.com/v1/images/generations', {
+        fetch('https://api.openai.com/v1/images/variations', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
